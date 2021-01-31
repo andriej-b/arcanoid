@@ -46,3 +46,8 @@ float Paddle::bottom()
 {
 	return this->shape.getPosition().y + shape.getSize().y / 2.f;
 }
+
+sf::Vector2f Paddle::getPosition()
+{
+	return shape.getPosition();
+}

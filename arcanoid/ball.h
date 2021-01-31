@@ -8,6 +8,13 @@ public:
 	ball() = delete;
 	~ball() = default;
 	void update();
+	
+	void moveUp();
+	void moveDown();
+	void moveRight();
+	void moveLeft();
+
+	sf::Vector2f getPosition();
 
 	float left();
 	float right();

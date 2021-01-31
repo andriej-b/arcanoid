@@ -52,7 +52,25 @@ float ball::bottom()
 {
 	return this->shape.getPosition().y + shape.getRadius();
 }
-//ball::~ball()
-//{
-//	
-//}
+
+void ball::moveDown()
+{
+	this->velocity.y = ballVelocity;
+}
+void ball::moveUp()
+{
+	this->velocity.y = -ballVelocity;
+}
+void ball::moveRight()
+{
+	this->velocity.x = ballVelocity;
+}
+void ball::moveLeft()
+{
+	this->velocity.x = -ballVelocity;
+}
+
+sf::Vector2f ball::getPosition()
+{
+	return shape.getPosition();
+}

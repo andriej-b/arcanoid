@@ -9,6 +9,8 @@ public:
 
 	void update();
 
+	sf::Vector2f getPosition();
+
 	float left();
 	float right();
 	float top();
