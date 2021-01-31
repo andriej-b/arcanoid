@@ -7,10 +7,12 @@
 #include <SFML/System.hpp>
 
 #include "ball.h"
+#include "Paddle.h"
 
 int main()
 {
-    ball ball1(600,370);
+    ball ball1(640,370);
+    Paddle paddle(640, 700);
     sf::RenderWindow window{ sf::VideoMode{1280,720},"arcanoid" };
     window.setFramerateLimit(60);
     sf::Event event;
@@ -26,7 +28,10 @@ int main()
             break;
         }
         ball1.update();
+        paddle.update();
+
         window.draw(ball1);
+        window.draw(paddle);
 
         window.display();
     }
