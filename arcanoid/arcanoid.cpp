@@ -1,7 +1,11 @@
 // arcanoid.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
+//TODO: paddle bounce ball in different angles
+//TODO: add health bar/points. Lost health if ball touch
 
 #include <iostream>
+#include <sstream>
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
@@ -71,6 +75,26 @@ int main()
     sf::Event event;
     unsigned blocksX{ 17 }, blocksY{ 4 }, blockWidth{ 60 }, blockHeight{ 20 };
 
+    int scoreCurrent = 0;
+
+    //my font
+    sf::Font myFont;
+    if (!myFont.loadFromFile("Minecraft.ttf")) {};
+
+    //player score
+    sf::Text score;
+    score.setString("SCORE: ");
+    score.setFont(myFont);
+    score.setCharacterSize(24);
+    score.setFillColor(sf::Color::Cyan);
+
+    sf::Text currentScore;
+    currentScore.setFont(myFont);
+    currentScore.setFillColor(sf::Color::Cyan);
+    currentScore.setCharacterSize(24);
+    currentScore.setPosition(100,0);
+
+
     std::vector<Block> blocks;
 
     for  (int i = 0;  i < blocksY; i++)
@@ -91,6 +115,8 @@ int main()
             window.close();
             break;
         }
+        
+
         ball1.update();
         paddle.update();
 
@@ -99,14 +125,22 @@ int main()
         {
             if (collisionTest(block, ball1)) 
             {
+                //calculate score
+                scoreCurrent += 5;
                 break;
             }
         }
         auto iterator = std::remove_if(begin(blocks), end(blocks), [](Block& block) {return block.isDestroyed();  });
         blocks.erase(iterator, end(blocks));
 
+        std::stringstream s;
+        s << scoreCurrent;
+        currentScore.setString(s.str());
+
         window.draw(ball1);
         window.draw(paddle);
+        window.draw(score);
+        window.draw(currentScore);
 
         for(auto& block:blocks)
         {

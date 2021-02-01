@@ -17,11 +17,11 @@ void Paddle::update()
 {
 	this->shape.move(this->velocity);
 
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) && this->left() > 0)
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && this->left() > 0)
 	{
 		velocity.x = -paddleVelocity;
 	}else
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right) && this->right() > 0)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) && this->right() > 0)
 	{
 		velocity.x = paddleVelocity;
 	}else
