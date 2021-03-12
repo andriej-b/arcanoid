@@ -16,6 +16,8 @@ public:
 
 	sf::Vector2f getPosition();
 
+	float getBallRadius();
+
 	float left();
 	float right();
 	float top();

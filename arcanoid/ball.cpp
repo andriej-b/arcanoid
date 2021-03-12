@@ -8,6 +8,11 @@ ball::ball(float t_X, float t_Y)
 	shape.setOrigin(this->ballRadius, this->ballRadius);
 }
 
+float ball::getBallRadius()
+{
+	return this->shape.getRadius();
+}
+
 void ball::draw(sf::RenderTarget& target, sf::RenderStates state) const
 {
 	target.draw(this->shape, state);
@@ -32,7 +37,11 @@ void ball::update()
 	}
 	else if (this->bottom() > 720)
 	{
-		velocity.y = -ballVelocity;
+		//velocity.y = -ballVelocity;
+		shape.setPosition(640, 370);
+		sf::sleep(sf::milliseconds(1000));
+		velocity.x = ballVelocity;
+		velocity.y = ballVelocity;
 	}
 }
 

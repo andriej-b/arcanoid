@@ -1,7 +1,7 @@
 // arcanoid.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 //TODO: paddle bounce ball in different angles
-//TODO: add health bar/points. Lost health if ball touch
+//TODO: add health bar/points. Lost health if ball touch down screen
 
 #include <iostream>
 #include <sstream>
@@ -13,6 +13,7 @@
 #include "ball.h"
 #include "Paddle.h"
 #include "Block.h"
+#include "Life.h"
 
 template<class T1, class T2> bool isIntersecting(T1& A, T2& B)
 {
@@ -66,16 +67,30 @@ bool collisionTest(Block& block, ball& Ball)
     }
 }
 
+bool ballFall(ball& Ball, Life& life)
+{
+    if(Ball.getPosition().y >= (720 - Ball.getBallRadius()-1))
+    {
+        return true;   
+    }
+    else {
+        return false;
+    }
+}
 int main()
 {
     ball ball1(640,370);
     Paddle paddle(640, 700);
+    //Life life(1200,5);
     sf::RenderWindow window{ sf::VideoMode{1280,720},"arcanoid" };
     window.setFramerateLimit(60);
     sf::Event event;
+
     unsigned blocksX{ 17 }, blocksY{ 4 }, blockWidth{ 60 }, blockHeight{ 20 };
+    //unsigned lifeWidth{ 40 }, lifeHeight{30};
 
     int scoreCurrent = 0;
+    int lifeCount = 3;
 
     //my font
     sf::Font myFont;
@@ -105,6 +120,13 @@ int main()
         }
     }
 
+    std::vector<Life> lifes;
+
+    for(int i = 0; i < lifeCount; i++)
+    {
+        lifes.emplace_back((1100+(i+1)*50),5);
+    }
+
     while(true)
     {
         window.clear(sf::Color::Black);
@@ -130,8 +152,22 @@ int main()
                 break;
             }
         }
-        auto iterator = std::remove_if(begin(blocks), end(blocks), [](Block& block) {return block.isDestroyed();  });
-        blocks.erase(iterator, end(blocks));
+        auto iteratorBlock = std::remove_if(begin(blocks), end(blocks), [](Block& block) {return block.isDestroyed();  });
+        blocks.erase(iteratorBlock, end(blocks));
+
+        for(auto& life:lifes)
+        {
+            if(ballFall(ball1, life))
+            {
+                life.remove();
+                //ball1.bottom();
+                break;
+            }
+        }
+        auto iteratorLife = std::remove_if(begin(lifes), end(lifes), [](Life& life) {return life.isRemoved(); });
+        lifes.erase(iteratorLife, end(lifes));
+        
+        
 
         std::stringstream s;
         s << scoreCurrent;
@@ -141,6 +177,11 @@ int main()
         window.draw(paddle);
         window.draw(score);
         window.draw(currentScore);
+
+        for(auto& life: lifes)
+        {
+            window.draw(life);
+        }
 
         for(auto& block:blocks)
         {
